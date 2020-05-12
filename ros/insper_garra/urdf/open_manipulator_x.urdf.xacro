@@ -192,6 +192,17 @@
       <geometry>
         <mesh filename="package://insper_garra/meshes/chain_link_grip_l.stl" scale="0.001 0.001 0.001"/>
       </geometry>
+      <surface>
+      <friction>
+        <torsional>
+          <coefficient>100</coefficient>
+          <use_patch_radius>true</use_patch_radius>
+          <patch_radius>0.1</patch_radius>
+          <surface_radius>0.1</surface_radius>
+
+        </torsional>
+      </friction>
+      </surface>
     </collision>
 
     <inertial>
@@ -227,6 +238,17 @@
       <geometry>
         <mesh filename="package://insper_garra/meshes/chain_link_grip_r.stl" scale="0.001 0.001 0.001"/>
       </geometry>
+      <surface>
+      <friction>
+        <torsional>
+          <coefficient>100</coefficient>
+          <use_patch_radius>true</use_patch_radius>
+          <patch_radius>0.1</patch_radius>
+          <surface_radius>0.1</surface_radius>
+
+        </torsional>
+      </friction>
+      </surface>
     </collision>
 
     <inertial>
