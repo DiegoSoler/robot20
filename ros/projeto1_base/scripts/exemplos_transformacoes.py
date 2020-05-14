@@ -54,26 +54,20 @@ tfl = 0
 tf_buffer = tf2_ros.Buffer()
 
 
-def recebe(msg):
-    global x # O global impede a recriacao de uma variavel local, para podermos usar o x global ja'  declarado
-    global y
-    global z
-    global id
-    for marker in msg.markers:
-        id = marker.id
-        marcador = "ar_marker_" + str(id)
+def faz_transformacao(ponto, ref1, ref2):
+    """Realiza a transformacao do ponto entre o referencial 1 e o referencial 2 
+        retorna a trasnformacao
+    """
+    print(tf_buffer.can_transform(ref1, ref2, rospy.Time(0)))
+    transf = tf_buffer.lookup_transform(ref1, ref2, rospy.Time(0))
+    return transf
 
-        print(tf_buffer.can_transform(frame, marcador, rospy.Time(0)))
-        header = Header(frame_id=marcador)
-        # Procura a transformacao em sistema de coordenadas entre a base do robo e o marcador numero 100
-        # Note que para seu projeto 1 voce nao vai precisar de nada que tem abaixo, a 
-        # Nao ser que queira levar angulos em conta
-        trans = tf_buffer.lookup_transform(frame, marcador, rospy.Time(0))
-        
-        # Separa as translacoes das rotacoes
-        x = trans.transform.translation.x
-        y = trans.transform.translation.y
-        z = trans.transform.translation.z
+def decompoe(transf):
+    """Recebe uma transformacao de sistemas de coordenadas e a converte em x,y,z e ângulo em RAD em relação a z"""
+    # Separa as translacoes das rotacoes
+        x = transf.transform.translation.x
+        y = transf.transform.translation.y
+        z = transf.transform.translation.z
         # ATENCAO: tudo o que vem a seguir e'  so para calcular um angulo
         # Para medirmos o angulo entre marcador e robo vamos projetar o eixo Z do marcador (perpendicular) 
         # no eixo X do robo (que e'  a direcao para a frente)
@@ -87,7 +81,33 @@ def recebe(msg):
         n2 = v2_n/linalg.norm(v2_n) # Normalizamos o vetor
         x_robo = [1,0,0]
         cosa = numpy.dot(n2, x_robo) # Projecao do vetor normal ao marcador no x do robo
-        angulo_marcador_robo = math.degrees(math.acos(cosa))
+        angulo_marcador_robo = math.acos(cosa)
+        return x,y,z, angulo
+
+
+
+def recebe(msg):
+    global x # O global impede a recriacao de uma variavel local, para podermos usar o x global ja'  declarado
+    global y
+    global z
+    global id
+
+
+    frame_names = {"camera_rgb_optical_frame":"Coordenadas da câmera", "end_effector_link": "Centro do atuador", "base_link": "Base do robô"}
+    frame_coords = {"camera_rgb_optical_frame":dict(), "end_effector_link": dict(), "base_link":dict()}
+
+
+    for marker in msg.markers:
+        id = marker.id
+        marcador = "ar_marker_" + str(id)
+
+        referenciais = frame_names.keys()
+        for ref in referenciais: 
+            transf = faz_transformacao(marcador, ref):
+            if transf is not None:
+                
+            xy, yt, zt, alpha_t 
+    
 
         # Terminamos
         print("id: {} x {} y {} z {} angulo {} ".format(id, x,y,z, angulo_marcador_robo))
