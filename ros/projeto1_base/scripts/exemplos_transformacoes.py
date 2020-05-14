@@ -30,8 +30,8 @@ bridge = CvBridge()
 cv_image = None
 media = []
 centro = []
-atraso = 1.5E9 # 1 segundo e meio. Em nanossegundos
 
+ids_possiveis_tags = [11,12,13,21,22,23] # Baseado no enunciado do projeto
 
 area = 0.0 # Variavel com a area do maior contorno
 
@@ -54,62 +54,84 @@ tfl = 0
 tf_buffer = tf2_ros.Buffer()
 
 
+def faz_transformacao(ref1, ref2):
+    """Realiza a transformacao do ponto entre o referencial 1 e o referencial 2 
+        retorna a trasnformacao
+    """
+    print(tf_buffer.can_transform(ref1, ref2, rospy.Time(0)))
+    transf = tf_buffer.lookup_transform(ref1, ref2, rospy.Time(0))
+    return transf
+
+def decompoe(transf):
+    """Recebe uma transformacao de sistemas de coordenadas e a converte em x,y,z e ângulo em RAD em relação a z"""
+    # Separa as translacoes das rotacoes
+    x = transf.transform.translation.x
+    y = transf.transform.translation.y
+    z = transf.transform.translation.z
+    # ATENCAO: tudo o que vem a seguir e'  so para calcular um angulo
+    # Para medirmos o angulo entre marcador e robo vamos projetar o eixo Z do marcador (perpendicular) 
+    # no eixo X do robo (que e'  a direcao para a frente)
+    t = transformations.translation_matrix([x, y, z])
+    # Encontra as rotacoes e cria uma matriz de rotacao a partir dos quaternions
+    r = transformations.quaternion_matrix([transf.transform.rotation.x, transf.transform.rotation.y, transf.transform.rotation.z, transf.transform.rotation.w])
+    m = numpy.dot(r,t) # Criamos a matriz composta por translacoes e rotacoes
+    z_marker = [0,0,1,0] # Sao 4 coordenadas porque e'  um vetor em coordenadas homogeneas
+    v2 = numpy.dot(m, z_marker)
+    v2_n = v2[0:-1] # Descartamos a ultima posicao
+    n2 = v2_n/linalg.norm(v2_n) # Normalizamos o vetor
+    x_robo = [1,0,0]
+    cosa = numpy.dot(n2, x_robo) # Projecao do vetor normal ao marcador no x do robo
+    angulo_marcador_robo = math.acos(cosa)
+    return x,y,z, angulo_marcador_robo
+
+def insere_coords_dict(dici, x,y,z,alpha):
+    dici["x"] = x 
+    dici["y"] = y 
+    dici["z"] = z 
+    dici["alpha"] = alpha
+    dici["graus"] = math.degrees(alpha)
+
+ 
 def recebe(msg):
     global x # O global impede a recriacao de uma variavel local, para podermos usar o x global ja'  declarado
     global y
     global z
     global id
+
+
+    frame_names = {"camera_rgb_optical_frame":"Coordenadas da câmera", "end_effector_link": "Cubo vermelho da mão", "base_link": "Base do robô"}
+    frame_coords = {"camera_rgb_optical_frame":dict(), "end_effector_link": dict(), "base_link":dict()}
+
+
     for marker in msg.markers:
         id = marker.id
         marcador = "ar_marker_" + str(id)
 
-        print(tf_buffer.can_transform(frame, marcador, rospy.Time(0)))
-        header = Header(frame_id=marcador)
-        # Procura a transformacao em sistema de coordenadas entre a base do robo e o marcador numero 100
-        # Note que para seu projeto 1 voce nao vai precisar de nada que tem abaixo, a 
-        # Nao ser que queira levar angulos em conta
-        trans = tf_buffer.lookup_transform(frame, marcador, rospy.Time(0))
-        
-        # Separa as translacoes das rotacoes
-        x = trans.transform.translation.x
-        y = trans.transform.translation.y
-        z = trans.transform.translation.z
-        # ATENCAO: tudo o que vem a seguir e'  so para calcular um angulo
-        # Para medirmos o angulo entre marcador e robo vamos projetar o eixo Z do marcador (perpendicular) 
-        # no eixo X do robo (que e'  a direcao para a frente)
-        t = transformations.translation_matrix([x, y, z])
-        # Encontra as rotacoes e cria uma matriz de rotacao a partir dos quaternions
-        r = transformations.quaternion_matrix([trans.transform.rotation.x, trans.transform.rotation.y, trans.transform.rotation.z, trans.transform.rotation.w])
-        m = numpy.dot(r,t) # Criamos a matriz composta por translacoes e rotacoes
-        z_marker = [0,0,1,0] # Sao 4 coordenadas porque e'  um vetor em coordenadas homogeneas
-        v2 = numpy.dot(m, z_marker)
-        v2_n = v2[0:-1] # Descartamos a ultima posicao
-        n2 = v2_n/linalg.norm(v2_n) # Normalizamos o vetor
-        x_robo = [1,0,0]
-        cosa = numpy.dot(n2, x_robo) # Projecao do vetor normal ao marcador no x do robo
-        angulo_marcador_robo = math.degrees(math.acos(cosa))
+        referenciais = frame_names.keys()
+        for ref in referenciais: 
+            transf = faz_transformacao(marcador, ref)
+            if transf is not None:           
+                xt, yt, zt, alpha_t = decompoe(transf)
+                insere_coords_dict(frame_coords[ref], xt, yt, zt, alpha_t)
 
-        # Terminamos
-        print("id: {} x {} y {} z {} angulo {} ".format(id, x,y,z, angulo_marcador_robo))
-
+        for ref in frame_names.keys():
+            print("\r")
+            if ref in frame_coords.keys():
+                print("Marcador ", id)
+                print("No referencial Referencial :",ref, " que é ", end=None)
+                print(frame_names[ref])
+                for k in frame_coords[ref].keys():
+                    print("%s %5.3f"%(k, frame_coords[ref][k]))
 
 
 # A função a seguir é chamada sempre que chega um novo frame
 def roda_todo_frame(imagem):
-    print("frame")
+    # print("frame")
     global cv_image
     global media
     global centro
     global resultados
 
-    now = rospy.get_rostime()
-    imgtime = imagem.header.stamp
-    lag = now-imgtime # calcula o lag
-    delay = lag.nsecs
-    # print("delay ", "{:.3f}".format(delay/1.0E9))
-    if delay > atraso and check_delay==True:
-        print("Descartando por causa do delay do frame:", delay)
-        return 
     try:
         antes = time.clock()
         temp_image = bridge.compressed_imgmsg_to_cv2(imagem, "bgr8")
@@ -120,7 +142,6 @@ def roda_todo_frame(imagem):
             # print(r) - print feito para documentar e entender
             # o resultado            
             pass
-
         depois = time.clock()
         # Desnecessário - Hough e MobileNet já abrem janelas
         cv_image = saida_net.copy()
@@ -128,6 +149,22 @@ def roda_todo_frame(imagem):
         print('ex', e)
     
 if __name__=="__main__":
+
+    print("""
+
+Para funcionar este programa *precisa* do Rviz rodando antes:
+
+
+
+roslaunch turtlebot3_manipulation_moveit_config move_group.launch
+
+roslaunch my_simulation rviz.launch
+
+"""
+    
+    
+    )
+
     rospy.init_node("cor")
 
     topico_imagem = "/camera/rgb/image_raw/compressed"
@@ -152,7 +189,9 @@ if __name__=="__main__":
         
         while not rospy.is_shutdown():
             for r in resultados:
-                print(r)
+
+                pass # Para evitar prints
+            #   print(r)
             #velocidade_saida.publish(vel)
 
             if cv_image is not None:
