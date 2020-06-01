@@ -12,7 +12,9 @@
 
 [Projeto 1](./projeto1/projeto1.md)
 
-## Prova 1 
+## Provas
+
+[Lista de provas anteriores (maioria com gabarito)](./revisao/lista_provas_anteriores.md)
 
 [Simulado da Prova 1 - com gabarito](https://github.com/mirwox/r20sim/tree/gabarito)
 
