@@ -6,9 +6,9 @@
 
 ## Simulado 2020
 
-[Gabarito https://github.com/mirwox/r20sim/tree/gabarito]()
+[Gabarito https://github.com/mirwox/r20sim/tree/gabarito](https://github.com/mirwox/r20sim/tree/gabarito)
 
-[Questões: https://github.com/mirwox/r20sim/tree/master]()
+[Questões: https://github.com/mirwox/r20sim/tree/master](https://github.com/mirwox/r20sim/tree/master)
 
 
 ## Prova P1 2020
