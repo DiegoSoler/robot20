@@ -78,7 +78,7 @@ def random_color():
     #print(color_val)
     return color_val
 
-def project1(M,P,p):
+def project1_old(M,P,p):
     """Converte um ponto de coordenadas camera_rgb_optical_frame para coordenadas de pixel"""
     pcamera = np.dot(M, p)
     pscreen = np.dot(P, pcamera)
@@ -86,7 +86,13 @@ def project1(M,P,p):
     p_int = np.array(p_float, dtype=np.int32)
     return p_int
 
-
+def project1(M,P,p):
+    """Converte um ponto de coordenadas camera_rgb_optical_frame para coordenadas de pixel"""
+    pcamera = np.dot(M, p)
+    pscreen = np.dot(P, pcamera)
+    p_float = np.true_divide(pscreen[:-1], pscreen[-1])
+    p_int = np.array(p_float, dtype=np.int32)
+    return p_int
 
 def convert_and_draw_tags(M,P, tag_points, image, color, id):
     """Usando a matriz M que converte do marker para camera_rgb_optical_frame
