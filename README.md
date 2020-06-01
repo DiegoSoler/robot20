@@ -4,6 +4,10 @@
 
 [Atividade 2 - cores, contornos, dilatação e erosão e linhas e círculos](./aula02)
 
+[Exemplo detalhado de segmentação / filtragem](./aula02/Atividade2_Exemplos.ipynb)
+
+[Feature matching](./aula02/BRISK Features.ipynb)
+
 [Atividade 3 - Ponto de fuga, MobileNet e Introdução ao ROS](./aula03)
 
 [Atividade 4 - Creepers coloridos](./aula04)
