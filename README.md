@@ -18,6 +18,8 @@
 
 ## Provas
 
+[Material de estudo para a Avaliação Final](./revisao/atividades_revisao.md)
+
 [Lista de provas anteriores (maioria com gabarito)](./revisao/lista_provas_anteriores.md)
 
 
