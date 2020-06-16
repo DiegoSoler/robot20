@@ -3,6 +3,23 @@
 # Provas anteriores:
 
 
+## Prova P2 2020 
+
+
+Enunciado: [https://github.com/mirwox/p2](https://github.com/mirwox/p2)
+
+Solução: 
+[https://github.com/mirwox/p2/tree/solution](https://github.com/mirwox/p2/tree/solution)
+
+
+
+
+## Prova P1 2020
+
+[Prova 1 2020  https://github.com/mirwox/prova1_2020](https://github.com/mirwox/prova1_2020)
+
+[Gabarito 2020: https://github.com/mirwox/prova1_2020/tree/solution](https://github.com/mirwox/prova1_2020/tree/solution)
+
 
 ## Simulado 2020
 
@@ -11,11 +28,6 @@
 [Questões: https://github.com/mirwox/r20sim/tree/master](https://github.com/mirwox/r20sim/tree/master)
 
 
-## Prova P1 2020
-
-[Prova 1 2020  https://github.com/mirwox/prova1_2020](https://github.com/mirwox/prova1_2020)
-
-[Gabarito 2020: https://github.com/mirwox/prova1_2020/tree/solution](https://github.com/mirwox/prova1_2020/tree/solution)
 
 
 ## Simulado da P1 2019

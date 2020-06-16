@@ -4,6 +4,14 @@
 Lembre-se de que também existem [as provas e simulados anteriores](./lista_provas_anteriores.md).
 
 
+# Discussão da P2  de 2020
+
+[Discussão feita em aula https://web.microsoftstream.com/video/f039d50f-3f6b-4e01-b45c-f2bffd2cbd84](https://web.microsoftstream.com/video/f039d50f-3f6b-4e01-b45c-f2bffd2cbd84)
+
+Código da solução 
+[https://github.com/mirwox/p2/tree/solution](https://github.com/mirwox/p2/tree/solution)
+
+
 # 0. Revisão de ROS feita para a P1 
 
 
