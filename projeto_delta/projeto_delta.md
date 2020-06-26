@@ -12,7 +12,7 @@ Completar este projeto leva grupos *que já entregaram* o projeto 1 ao conceito 
 
 O robô receberá uma lista de objetos a localizar no 4.o andar e tem que *tirar uma foto* ou seja, capturar subimagem de cada objeto desejado.
 
-Pode ser necessário localizar mais de um objeto numa rodada do código.  Pode
+Pode ser necessário localizar mais de um objeto numa execução do código. 
 
 Exemplo:
 
@@ -30,9 +30,9 @@ Quando terminar deve escrever uma mensagem clara na tela para avisar que termino
 
 ## O que é para fazer
 
-Defina uma rota de pontos-chave no mapa usando odometria e, ao longo dessa rota, o robô deve procurar os objetos.  Periodicamente o robô deve parar e gazer um giro de 360 graus para procurar os objetos.
+Defina uma rota de pontos-chave no mapa usando odometria e, ao longo dessa rota, o robô deve procurar os objetos.  Periodicamente ao longo da rota o robô deve parar e gazer um giro de 360 graus para procurar os objetos.
 
-
+Sempre que um objeto for encontrado, deve-se criar uma janela secundária apenas com este objeto (mostrando com `cv2.imshow`), e aparecer um texto na visão do robô indicando de forma ativa que foi capturado.
 
 ## Formato do objetivo
 
@@ -57,6 +57,21 @@ Elementos possíveis
 "bike"
 ```
 
+Portanto o objetivo mais complexo que pode existir é este abaixo:
+
+goal = ["person", "cat", "dog", "bird", "bird", 
+"blue_sphere"
+
+"red_sphere"
+
+"green_sphere"
+
+"bike"]
+
+Não importa a ordem em que os objetos são encontrados.
+
+
+
 Para lançar o mapa atualize o repositório [my_simulation](https://github.com/arnaldojr/my_simulation/) e faça:
 
     roslaunch my_simulation esconde-esconde.launch
@@ -72,10 +87,16 @@ Lembre-se que as coordenadas de odometria são centradas na posição inicial do
 
 Sugerimos que estude a solução da questão de odometria da Prova P2 
 
-https://github.com/mirwox/p2/blob/solution/p2_20/scripts/Q3_controle.py
+[https://github.com/mirwox/p2/blob/solution/p2_20/scripts/Q3_controle.py](https://github.com/mirwox/p2/blob/solution/p2_20/scripts/Q3_controle.py)
 
 Também sugerimos o estudo da questão de deteção de esferas da P2
 
-https://github.com/mirwox/p2/blob/solution/p2_20/scripts/Q4_formas.py
+[https://github.com/mirwox/p2/blob/solution/p2_20/scripts/Q4_formas.py](https://github.com/mirwox/p2/blob/solution/p2_20/scripts/Q4_formas.py)
 
+O slicing feito no gabarito da P1 Q1 é um jeito de criar uma imagem menor contendo apenas uma parte retangular da imagem original
 
+```python
+     submask = mask[y1:y2,x1:x2]
+```
+
+Veja mais [aqui](https://github.com/mirwox/prova1_2020/blob/solution/q1/Solucao_Q1.ipynb)
