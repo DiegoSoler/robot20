@@ -8,19 +8,21 @@ Este projeto deverá ser realizado por todos os grupos que não atingiram pelo m
 
 Completar este projeto leva grupos *que já entregaram* o projeto 1 ao conceito C.
 
+O deadline é 23:59 do dia 03/07, mas se terminar antes envie e-mail pedindo para o professor já avaliar.
+
 ## Objetivo do robô
 
 O robô receberá uma lista de objetos a localizar no 4.o andar e tem que *tirar uma foto* ou seja, capturar subimagem de cada objeto desejado.
 
 Pode ser necessário localizar mais de um objeto numa execução do código. 
 
-Exemplo:
+Exemplo de objetivo:
 
 ```python
 goal = ["cat", "green_sphere"]
 ```
 
-A partir do objetivo abaixo o robô precisa achar um jeito de percorrer o 4.o andar e localizar a esfera verde e o gato.  Deve adotar alguma estratégia de percorrer o andar.
+A partir do objetivo dado o robô precisa achar um jeito de percorrer o 4.o andar e localizar a esfera verde e o gato.  Deve adotar alguma estratégia de percorrer o andar.
 
 Assim que localizar um objeto precisa capturar o retângulo que contém o objeto fazendo slicing e depois prosseguir em direção ao próximo
 
@@ -31,6 +33,8 @@ Quando terminar deve escrever uma mensagem clara na tela para avisar que termino
 ## O que é para fazer
 
 Defina uma rota de pontos-chave no mapa usando odometria e, ao longo dessa rota, o robô deve procurar os objetos.  Periodicamente ao longo da rota o robô deve parar e gazer um giro de 360 graus para procurar os objetos.
+
+Assim a *mesma rota* serve para todos os objetivos.
 
 Sempre que um objeto for encontrado, deve-se criar uma janela secundária apenas com este objeto (mostrando com `cv2.imshow`), e aparecer um texto na visão do robô indicando de forma ativa que foi capturado.
 
@@ -59,17 +63,11 @@ Elementos possíveis
 
 Portanto o objetivo mais complexo que pode existir é este abaixo:
 
-goal = ["person", "cat", "dog", "bird", "bird", 
-"blue_sphere"
-
-"red_sphere"
-
-"green_sphere"
-
-"bike"]
+```python
+goal = ["person", "cat", "dog", "bird", "bird", "blue_sphere", "red_sphere", "green_sphere", "bike"]
+```
 
 Não importa a ordem em que os objetos são encontrados.
-
 
 
 Para lançar o mapa atualize o repositório [my_simulation](https://github.com/arnaldojr/my_simulation/) e faça:
