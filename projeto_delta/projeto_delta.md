@@ -8,7 +8,7 @@ Este projeto deverá ser realizado por todos os grupos que não atingiram pelo m
 
 Completar este projeto leva grupos *que já entregaram* o projeto 1 ao conceito C.
 
-O deadline é 23:59 do dia 03/07, mas se terminar antes envie e-mail pedindo para o professor já avaliar.
+O deadline é 20:00 do dia 04/07, mas se terminar antes envie e-mail pedindo para o professor já avaliar.
 
 ## Objetivo do robô
 
