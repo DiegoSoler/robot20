@@ -29,6 +29,18 @@ Assim que localizar um objeto precisa capturar o retângulo que contém o objeto
 Quando terminar deve escrever uma mensagem clara na tela para avisar que terminou, e parar.
 
 
+## Objetivo a ser filmado
+
+Seu programa precisa demonstrar que funciona para o seguinte objetivo: 
+
+```python
+goal = ["bird", "red_sphere"]
+```
+
+## Questionário
+
+[Link para entrega do projeto](https://insper.blackboard.com/webapps/assessment/take/launchAssessment.jsp?course_id=_32801_1&content_id=_731628_1&mode=cpview)
+
 
 ## O que é para fazer
 
